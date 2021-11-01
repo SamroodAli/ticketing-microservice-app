@@ -1,0 +1,18 @@
+apiVersion: skaffold/v2alpha3
+kind: Config
+deploy: #Lists out all the config files we want to load into our cluster.
+  kubectl:
+    manifests:
+      - ./infra/k8s/* # Directory where our config files are.
+build:
+  local:
+    push: false # Don't push it to dockerhub on build.
+  artifacts: # These are all the things that are going to be built.
+    - image: devsamrood/auth # Setting an image name for the auth service.
+      context: auth # Path from where to create the image.
+      docker:
+        dockerfile: Dockerfile # Config file to create the image.
+      sync: # To listen to file changes and makes the changes in the cluster.
+        manual: # We are giving manual configuration for file changes.
+          - src: 'src/**/*.ts' # where to get changes relative to context
+            dest: .            # Where to apply changes in the cluster relative to image.

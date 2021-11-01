@@ -15,6 +15,7 @@ spec:
       containers:
         - name: auth
           image: devsamrood/auth
+          imagePullPolicy: Never
 ---
 apiVersion: v1
 kind: Service
@@ -22,7 +23,7 @@ metadata:
   name: auth-srv
 spec:
   type: ClusterIP
-  selector;
+  selector:
     app: auth
   ports:
     - name: auth
