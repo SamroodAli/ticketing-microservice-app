@@ -2,6 +2,9 @@ import express from "express";
 import { json, urlencoded } from "body-parser";
 
 import { currentUserRouter } from "./routes/current-user";
+import { signinRouter } from "./routes/signin";
+import { signoutRouter } from "./routes/singout";
+import { signupRouter } from "./routes/signup";
 
 const app = express();
 app.use(json());
