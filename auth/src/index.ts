@@ -12,6 +12,9 @@ app.use(json());
 app.use(urlencoded({ extended: true }));
 
 app.use(currentUserRouter);
+app.use(signinRouter);
+app.use(signoutRouter);
+app.use(signupRouter);
 
 app.listen(3000, () => {
   console.log("Server is running on port 3000");
