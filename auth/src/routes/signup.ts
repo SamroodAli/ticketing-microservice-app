@@ -24,7 +24,6 @@ router.post(
 
     const { email, password } = req.body;
     console.log("Creating a user");
-    throw new DatabaseConnectionError();
     res.send("hey sign up");
   }
 );
