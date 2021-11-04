@@ -13,6 +13,6 @@ export const errorHandler = (
   }
 
   res.status(400).send({
-    errors: [{ message: "Somethig went wrong " }],
+    errors: [{ message: err.message }],
   });
 };
