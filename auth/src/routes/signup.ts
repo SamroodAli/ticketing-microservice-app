@@ -41,7 +41,9 @@ router.post(
         id: user.id,
         email: user.email,
       },
-      "asdf"
+      process.env.JWT_KEY!
+      // The exclamation mark (!) at the end is for typescript
+      // since we are sure this env variable exists as we did a check in src/index.ts
     );
 
     // store jwt in session
