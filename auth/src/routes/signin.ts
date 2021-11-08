@@ -3,6 +3,7 @@ import { body } from "express-validator";
 import { validateRequest } from "../middlewares/validate-request";
 import { User } from "../models/User";
 import { BadRequestError } from "../errors/bad-request-error";
+import {} from "../services/password-manager";
 
 const router = express.Router();
 
@@ -15,7 +16,7 @@ router.post(
   validateRequest,
   async (req: Request, res: Response) => {
     const { email, password } = req.body;
-    // send response
+
     const existingUser = await User.findOne({ email });
     if (!existingUser) {
       throw new BadRequestError("Invalid credentials");
