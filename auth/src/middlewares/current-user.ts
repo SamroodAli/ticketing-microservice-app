@@ -8,6 +8,7 @@ interface UserPayload {
 
 // reach into existing type definition and modify an existing interface
 //  react into express project and add additional property currentUser to the interface Request
+
 declare global {
   namespace Express {
     interface Request {
