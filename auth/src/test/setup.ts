@@ -8,7 +8,7 @@ beforeAll(async () => {
   process.env.JWT_KEY = "asdfasdf";
   mongo = await MongoMemoryServer.create();
   const mongoUri = mongo.getUri();
-  await mongoose.connect(mongoUri, {});
+  return mongoose.connect(mongoUri, {});
 });
 
 beforeEach(async () => {
@@ -19,6 +19,7 @@ beforeEach(async () => {
 });
 
 afterAll(async () => {
-  await mongo.stop();
-  await mongoose.connection.close();
+  mongo.stop();
+  mongoose.connection.close();
+  // not awaiting both above as it leads to jest timing out
 });

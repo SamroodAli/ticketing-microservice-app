@@ -8,7 +8,7 @@ it("returns a 201 with a successful signin", async () => {
   };
   await request(app).post("/api/users/signup").send(credentials).expect(201);
 
-  await request(app).post("/api/users/signin").send(credentials).expect(201);
+  return request(app).post("/api/users/signin").send(credentials).expect(201);
 });
 
 it("fails when a email that does not exist is supplied", async () => {
@@ -16,7 +16,7 @@ it("fails when a email that does not exist is supplied", async () => {
     email: "test@2asda.com",
     password: "password",
   };
-  await request(app).post("/api/users/signin").send(credentials).expect(400);
+  return request(app).post("/api/users/signin").send(credentials).expect(400);
 });
 
 it("fails when an incorrect password is supplied", async () => {
@@ -26,7 +26,7 @@ it("fails when an incorrect password is supplied", async () => {
   };
   await request(app).post("/api/users/signup").send(credentials).expect(201);
 
-  await request(app)
+  return request(app)
     .post("/api/users/signin")
     .send({
       email: "test@asdasdasd.com",
