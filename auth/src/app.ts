@@ -18,7 +18,7 @@ app.use(json());
 app.use(
   cookieSession({
     signed: false,
-    secure: true,
+    secure: process.env.NODE_ENV !== "test", //true unless running tests
   })
 );
 app.use(urlencoded({ extended: true }));
