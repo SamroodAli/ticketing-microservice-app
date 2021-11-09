@@ -24,9 +24,9 @@ beforeEach(async () => {
 });
 
 afterAll(async () => {
-  mongo.stop();
-  mongoose.connection.close();
-  // not awaiting both above as it leads to jest timing out
+  await mongo.stop();
+  await mongoose.connection.close();
+  // dont await to avoid jest timing out
 });
 
 global.signin = async () => {
