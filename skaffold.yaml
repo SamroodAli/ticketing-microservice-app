@@ -14,5 +14,13 @@ build:
         dockerfile: Dockerfile # Config file to create the image.
       sync: # To listen to file changes and makes the changes in the cluster.
         manual: # We are giving manual configuration for file changes.
-          - src: 'src/**/*.ts' # where to get changes relative to context
-            dest: .            # Where to apply changes in the cluster relative to image.
+          - src: "src/**/*.ts" # where to get changes relative to context
+            dest: . # Where to apply changes in the cluster relative to image.
+    - image: devsamrood/next-client
+      context: next-client
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "**/*.js"
+            dest: .
