@@ -20,7 +20,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: client-svc
+  name: client-srv
 spec:
   type: ClusterIP
   selector:
