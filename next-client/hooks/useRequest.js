@@ -13,6 +13,7 @@ const useRequest = ({ url, method, body, onSuccess }) => {
       }
       return response.data;
     } catch (err) {
+      const errors = err.response.data.errors;
       setErrors(
         <div className="alert alert-danger">
           <h4>Sorry, please provide valid crendentials</h4>
