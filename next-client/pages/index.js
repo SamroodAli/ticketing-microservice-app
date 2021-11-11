@@ -1,27 +1,19 @@
-import axios from "axios";
+import buildClient from "../api/build-client";
 
 const LandingPage = ({ currentUser }) => {
   return <div>{JSON.stringify(currentUser)}</div>;
 };
 
-export async function getServerSideProps() {
+export async function getServerSideProps(context) {
   // url can be "http://auth-srv:3000/api/users/currentuser"
-  console.log("I am in server");
+  // buildClient gives us back axios instance with baseurl configured
   try {
-    const response = await axios
-      .get(
-        "http://ingress-nginx-controller.ingress-nginx.svc.cluster.local/api/users/currentuser",
-        { headers: { Host: "ticketing.dev" } } // for ingress, as set host to ticketing.dev
-      )
-      .catch(console.error);
-
-    return {
-      props: { currentUser: response.data.currentUser },
-    };
+    const { data } = await buildClient(context).get("/api/users/currentuser");
+    return { props: data };
   } catch (err) {
     console.log(err);
     return {
-      props: { currentUser: null },
+      props: { data: null },
     };
   }
 }
