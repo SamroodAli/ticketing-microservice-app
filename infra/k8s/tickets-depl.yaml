@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tickets-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tickets
+  template:
+    metadata:
+      labels:
+        app: tickets
+    spec:
+      containers:
+        - name: tickets
+          image: devsamrood/tickets
+          imagePullPolicy: Never
+          env:
+            - name: JWT_KEY # What will show up in code, can be different from the secret's key
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret # Name of the secret
+                  key: JWT_KEY # The key from the secret's key value pair
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tickets-srv
+spec:
+  type: ClusterIP
+  selector:
+    app: tickets
+  ports:
+    - name: tickets
+      protocol: TCP
+      port: 3000
+      targetPort: 3000
