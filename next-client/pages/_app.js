@@ -12,10 +12,14 @@ function MyApp({ Component, pageProps, currentUser }) {
 }
 
 MyApp.getInitialProps = async (appContext) => {
-  const { data } = await buildClient(appContext.ctx).get(
-    "/api/users/currentuser"
-  );
-  return { currentUser: data.currentUser };
+  try {
+    const { data } = await buildClient(appContext.ctx).get(
+      "/api/users/currentuser"
+    );
+    return { currentUser: data.currentUser };
+  } catch (err) {
+    return { currentUSer: null };
+  }
 };
 
 export default MyApp;

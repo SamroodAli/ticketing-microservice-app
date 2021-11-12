@@ -17,6 +17,8 @@ spec:
           image: devsamrood/auth
           imagePullPolicy: Never
           env:
+            - name: MONGO_URI
+              value: "mongodb://auth-mongo-srv:27017/auth"
             - name: JWT_KEY # What will show up in code, can be different from the secret's key
               valueFrom:
                 secretKeyRef:
