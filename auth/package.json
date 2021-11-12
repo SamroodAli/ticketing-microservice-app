@@ -18,6 +18,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@devstoic-learning/ticketing": "^1.0.12",
     "@types/cookie-session": "^2.0.43",
     "@types/express": "^4.17.13",
     "@types/jsonwebtoken": "^8.5.5",
