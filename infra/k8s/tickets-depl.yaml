@@ -17,6 +17,8 @@ spec:
           image: devsamrood/tickets
           imagePullPolicy: Never
           env:
+            - name: MONGO_URI
+              value: "mongodb://tickets-mongo-srv:27017/tickets"
             - name: JWT_KEY # What will show up in code, can be different from the secret's key
               valueFrom:
                 secretKeyRef:
