@@ -16,6 +16,14 @@ build:
         manual: # We are giving manual configuration for file changes.
           - src: "src/**/*.ts" # where to get changes relative to context
             dest: . # Where to apply changes in the cluster relative to image.
+    - image: devsamrood/tickets
+      context: tickets
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "src/**/*.ts"
+            dest: .
     - image: devsamrood/next-client
       context: next-client
       docker:
