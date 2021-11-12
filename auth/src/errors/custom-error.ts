@@ -4,7 +4,7 @@ export abstract class CustomError extends Error {
   constructor(message: string) {
     // for error logging purposes
     super(message);
-    // since we are extending native class
+    // since we are extending a native class, 'Error'
     Object.setPrototypeOf(this, CustomError.prototype);
   }
 
