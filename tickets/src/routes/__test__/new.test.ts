@@ -62,7 +62,7 @@ it("returns an error if an invalid price is provided", async () => {
 
 it("creates a ticket with valid inputs", async () => {
   // add in check to make sure a ticket was saved
-  let tickets = await Ticket.find({}).lean();
+  let tickets = await Ticket.find({}).lean().exec();
   expect(tickets.length).toEqual(0);
 
   await request(app)
@@ -74,7 +74,7 @@ it("creates a ticket with valid inputs", async () => {
     })
     .expect(201);
 
-  tickets = await Ticket.find({}).lean();
+  tickets = await Ticket.find({}).lean().exec();
   expect(tickets.length).toEqual(1);
 
   const ticket = tickets[0];

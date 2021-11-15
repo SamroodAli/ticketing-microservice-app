@@ -8,9 +8,10 @@ const router = express.Router();
 router.get("/api/tickets/:id", async (req: Request, res: Response) => {
   const ticket = await Ticket.findById(req.params.id);
   if (!ticket) {
-    return new NotFoundError();
+    throw new NotFoundError();
   }
-  return res.status(200).send(ticket);
+  console.log(ticket.toJSON());
+  return res.status(200).json(ticket);
 });
 
 export { router as showTicketRouter };

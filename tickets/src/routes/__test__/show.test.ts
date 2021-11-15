@@ -1,9 +1,10 @@
 import request from "supertest";
 import { app } from "../../app";
+import mongoose from "mongoose";
 
-it("returns a 404 if the ticket is not found", async () => {
-  const response = await request(app).get("/api/tickets/testId1213").send();
-  expect(response.status).toEqual(404);
+it("returns a 404 if the ticket is not found", () => {
+  const newObjectId = global.newMongooseId();
+  return request(app).get(`/api/tickets/${newObjectId}`).send().expect(404);
 });
 
 it("returns the ticket if the ticket is found", async () => {
@@ -12,17 +13,16 @@ it("returns the ticket if the ticket is found", async () => {
   const response = await request(app)
     .post("/api/tickets")
     .set("Cookie", global.signin())
+    .set("Accept", "application/json")
+    .expect("Content-Type", /json/)
     .send({
       title,
       price,
     })
     .expect(201);
-  const ticket = response.body;
-  const ticketResponse = await request(app)
-    .get(`/api/tickets/${ticket.id}`)
-    .send()
-    .expect(200);
-  const newTicket = ticketResponse.body;
-  expect(newTicket.title).toEqual(ticket.title);
-  return expect(newTicket.price).toEqual(ticket.price);
+  const ticketResponse = await request(app).get(
+    `/api/tickets/${response.body.id}`
+  );
+  expect(ticketResponse.body.title).toEqual(title);
+  return expect(ticketResponse.body.price).toEqual(String(price));
 });

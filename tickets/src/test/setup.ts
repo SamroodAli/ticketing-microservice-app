@@ -6,6 +6,7 @@ let mongo: MongoMemoryServer;
 
 declare global {
   var signin: () => string[];
+  var newMongooseId: () => string;
 }
 
 beforeAll(async () => {
@@ -47,3 +48,5 @@ global.signin = () => {
   //supertest expects cookies in an array
   return [`express:sess=${base64}`];
 };
+
+global.newMongooseId = () => new mongoose.Types.ObjectId().toHexString();
