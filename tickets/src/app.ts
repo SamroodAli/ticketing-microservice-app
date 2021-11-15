@@ -9,6 +9,7 @@ import {
 } from "@devstoic-learning/ticketing";
 import { createTicketRouter } from "./routes/new";
 import { showTicketRouter } from "./routes/show";
+import { indexTicketRouter } from "./routes";
 
 const app = express();
 app.set("trust proxy", true); // traffic is proxied from ingress-nginx
@@ -25,6 +26,7 @@ app.use(
 app.use(currentUser);
 app.use(showTicketRouter);
 app.use(createTicketRouter);
+app.use(indexTicketRouter);
 
 app.all("*", async () => {
   throw new NotFoundError();
