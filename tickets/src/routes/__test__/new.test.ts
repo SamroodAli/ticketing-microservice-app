@@ -79,5 +79,5 @@ it("creates a ticket with valid inputs", async () => {
 
   const ticket = tickets[0];
   expect(ticket.title).toEqual("validTitle");
-  return expect(ticket.price).toEqual(20);
+  return expect(ticket.price).toEqual("20");
 });
