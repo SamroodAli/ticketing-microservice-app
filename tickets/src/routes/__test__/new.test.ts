@@ -20,11 +20,41 @@ it("returns a status other than 401 if user is signed in", async () => {
 });
 
 it("returns an error if an invalid title is provided", async () => {
-  return null;
+  const withEmptyTitle = request(app)
+    .post("/api/tickets")
+    .set("Cookie", global.signin())
+    .send({
+      ticket: "",
+      price: 10,
+    })
+    .expect(400);
+  const withoutEmptyTitle = request(app)
+    .post("/api/tickets")
+    .send({
+      price: 10,
+    })
+    .expect(400);
+
+  return Promise.all([withEmptyTitle, withoutEmptyTitle]);
 });
 
 it("returns an error if an invalid price is provided", async () => {
-  return null;
+  const withEmptyPrice = request(app)
+    .post("/api/tickets")
+    .set("Cookie", global.signin())
+    .send({
+      ticket: "validTitle",
+      price: -10,
+    })
+    .expect(400);
+  const withoutEmptyPrice = request(app)
+    .post("/api/tickets")
+    .send({
+      title: "validTitle",
+    })
+    .expect(400);
+
+  return Promise.all([withEmptyPrice, withoutEmptyPrice]);
 });
 
 it("creates a ticket with valid inputs", async () => {
