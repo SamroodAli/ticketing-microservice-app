@@ -3,6 +3,7 @@ import "express-async-errors";
 import { json, urlencoded } from "body-parser";
 import cookieSession from "cookie-session";
 import { errorHandler, NotFoundError } from "@devstoic-learning/ticketing";
+import morgan from "morgan";
 
 import { currentUserRouter } from "./routes/current-user";
 import { signinRouter } from "./routes/signin";
@@ -13,6 +14,8 @@ const app = express();
 app.set("trust proxy", true); // traffic is proxied from ingress-nginx
 
 app.use(json());
+app.use(morgan("dev"));
+
 app.use(
   cookieSession({
     signed: false,

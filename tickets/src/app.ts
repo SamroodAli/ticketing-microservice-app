@@ -1,6 +1,7 @@
 import express from "express";
 import "express-async-errors";
 import { json, urlencoded } from "body-parser";
+import morgan from "morgan";
 import cookieSession from "cookie-session";
 import {
   errorHandler,
@@ -16,6 +17,7 @@ const app = express();
 app.set("trust proxy", true); // traffic is proxied from ingress-nginx
 app.use(urlencoded({ extended: true }));
 app.use(json());
+app.use(morgan("dev"));
 
 app.use(
   cookieSession({
