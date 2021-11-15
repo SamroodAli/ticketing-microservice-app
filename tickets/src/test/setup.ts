@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 let mongo: MongoMemoryServer;
 
 declare global {
-  var signin: () => string[];
+  var signin: (id?: string) => string[];
   var newMongooseId: () => string;
 }
 
@@ -29,10 +29,12 @@ afterAll(async () => {
   // dont await to avoid jest timing out
 });
 
-global.signin = () => {
+global.newMongooseId = () => new mongoose.Types.ObjectId().toHexString();
+
+global.signin = (id = global.newMongooseId()) => {
   // build a jwt payload {id,email}
   const payload = {
-    id: "123456",
+    id,
     email: "test@test.com",
   };
 
@@ -48,5 +50,3 @@ global.signin = () => {
   //supertest expects cookies in an array
   return [`express:sess=${base64}`];
 };
-
-global.newMongooseId = () => new mongoose.Types.ObjectId().toHexString();
