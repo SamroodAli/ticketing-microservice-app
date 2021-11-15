@@ -1,7 +1,5 @@
 import { MongoMemoryServer } from "mongodb-memory-server";
 import mongoose from "mongoose";
-import { app } from "../app";
-import request from "supertest";
 import jwt from "jsonwebtoken";
 
 let mongo: MongoMemoryServer;
@@ -46,6 +44,6 @@ global.signin = () => {
   // take JSON and encode it as base64 as  cookieSession packages encodes it in base64
   const base64 = Buffer.from(sessionJSON).toString("base64");
   // return a string thats the cookie with the encoded data
-  //supertest expects this in an array
+  //supertest expects cookies in an array
   return [`express:sess=${base64}`];
 };
