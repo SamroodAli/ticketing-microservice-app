@@ -16,7 +16,7 @@ it("returns a status other than 401 if user is signed in", async () => {
     .post("/api/tickets")
     .set("Cookie", global.signin())
     .send({});
-  expect(response.status).not.toEqual(401);
+  return expect(response.status).not.toEqual(401);
 });
 
 it("returns an error if an invalid title is provided", async () => {
@@ -30,6 +30,7 @@ it("returns an error if an invalid title is provided", async () => {
     .expect(400);
   const withoutEmptyTitle = request(app)
     .post("/api/tickets")
+    .set("Cookie", global.signin())
     .send({
       price: 10,
     })
@@ -49,6 +50,7 @@ it("returns an error if an invalid price is provided", async () => {
     .expect(400);
   const withoutEmptyPrice = request(app)
     .post("/api/tickets")
+    .set("Cookie", global.signin())
     .send({
       title: "validTitle",
     })
