@@ -13,7 +13,7 @@ export abstract class Publisher<T extends Event> {
     this.client = client;
   }
 
-  publich(data: T["data"]) {
+  publish(data: T["data"]) {
     this.client.publish(this.subject, data, () => {
       console.log("Event published");
     });
