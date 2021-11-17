@@ -1,9 +1,17 @@
 import { Message, Stan } from "node-nats-streaming";
+import { Subjects } from "./subjects";
 
-export abstract class Listener {
-  abstract subject: string;
+interface Event {
+  subject: Subjects;
+  data: any;
+}
+
+// generic contraints https://www.typescriptlang.org/docs/handbook/2/generics.html
+
+export abstract class Listener<T extends Event> {
+  abstract subject: T["subject"];
   abstract queueGroupName: string;
-  abstract onMessage(data: any, msg: Message): void;
+  abstract onMessage(data: T["data"], msg: Message): void;
 
   protected ackWait = 5 * 1000;
   constructor(private client: Stan) {}
