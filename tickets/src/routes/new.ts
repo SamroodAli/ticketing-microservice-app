@@ -2,6 +2,8 @@ import express, { Request, Response } from "express";
 import { body } from "express-validator";
 import { requireAuth, validateRequest } from "@devstoic-learning/ticketing";
 import { Ticket } from "../models/Ticket";
+import { TicketCreatedPublisher } from "../events/publishers/ticket-created-publisher";
+import {} from "node-nats-streaming";
 
 const router = express.Router();
 
@@ -26,6 +28,13 @@ router.post(
     });
 
     await ticket.save();
+
+    new TicketCreatedPublisher(client).publish({
+      id: ticket.id,
+      title: ticket.title,
+      price: ticket.price,
+      userId: ticket.userId,
+    });
     return res.status(201).json(ticket);
   }
 );
