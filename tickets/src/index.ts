@@ -6,6 +6,7 @@ const start = async () => {
   if (!process.env.JWT_KEY) {
     throw new Error("JWT_KEY must be defined");
   }
+
   if (!process.env.MONGO_URI) {
     throw new Error("MONGO_URI JWT_KEY must be defined");
   }
@@ -17,6 +18,15 @@ const start = async () => {
       "ticket-client",
       "http://nats-srv:4222"
     );
+    // Do not hide away this 'on close' logic as process.exit logic should not be in some class in a library
+    natsWrapper.client.on("close", () => {
+      console.log("Ticket service connection to NATS closed");
+      process.exit();
+    });
+
+    process.on("SIGINT", () => natsWrapper.client.close());
+    process.on("SIGTERM", () => natsWrapper.client.close());
+
     await mongoose.connect(process.env.MONGO_URI);
     console.log("Connected to Tickets service MongoDb");
   } catch (err) {
@@ -26,5 +36,4 @@ const start = async () => {
     console.log("Tickets server is running on port 3000");
   });
 };
-
 start();
