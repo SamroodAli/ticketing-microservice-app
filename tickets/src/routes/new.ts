@@ -29,7 +29,17 @@ router.post(
 
     await ticket.save();
 
-    new TicketCreatedPublisher(natsWrapper.client).publish({
+    // here there are some possible issues
+    //issue1:
+    // Saving the ticket to the database but failing to publish the event, maybe nats was down.
+    // solution => have another db to track events and another process/business logic to publish events from the db to nats
+    // This way, our events are stored and we can have logic to make sure all the events in event db are published
+    //issue2: Failing to save to one of the databases
+    // solution: We have to rollback the other database save
+    //by having these two database mutations(saving to ticket collection and events db) as a single mongodb transaction.
+    // Ofcourse maybe we have to save these two again.
+
+    await new TicketCreatedPublisher(natsWrapper.client).publish({
       id: ticket.id,
       title: ticket.title,
       price: ticket.price,
