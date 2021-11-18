@@ -1,6 +1,7 @@
 import request from "supertest";
 import { app } from "../../app";
 import { Ticket } from "../../models/Ticket";
+import { natsWrapper } from "../../nats-wrapper";
 
 it("has a route handler listening to /api/tickets for a post request", async () => {
   const response = await request(app).post("/api/tickets").send({});
@@ -61,7 +62,6 @@ it("returns an error if an invalid price is provided", async () => {
 });
 
 it("creates a ticket with valid inputs", async () => {
-  // add in check to make sure a ticket was saved
   let tickets = await Ticket.find({}).lean().exec();
   expect(tickets.length).toEqual(0);
 
@@ -80,4 +80,17 @@ it("creates a ticket with valid inputs", async () => {
   const ticket = tickets[0];
   expect(ticket.title).toEqual("validTitle");
   return expect(ticket.price).toEqual("20");
+});
+
+it("publishes the ticket created event", async () => {
+  await request(app)
+    .post("/api/tickets")
+    .set("Cookie", global.signin())
+    .send({
+      title: "validTitle",
+      price: 20,
+    })
+    .expect(201);
+  // natsWrapper here is a fake jest mock
+  expect(natsWrapper.client.publish).toHaveBeenCalled();
 });
