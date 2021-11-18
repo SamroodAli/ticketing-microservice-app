@@ -9,6 +9,8 @@ declare global {
   var newMongooseId: () => string;
 }
 
+jest.mock("../nats-wrapper.ts");
+
 beforeAll(async () => {
   process.env.JWT_KEY = "asdfasdf";
   mongo = await MongoMemoryServer.create();

@@ -2,8 +2,6 @@ import request from "supertest";
 import { app } from "../../app";
 import { Ticket } from "../../models/Ticket";
 
-jest.mock("../../nats-wrapper.ts");
-
 it("has a route handler listening to /api/tickets for a post request", async () => {
   const response = await request(app).post("/api/tickets").send({});
 
