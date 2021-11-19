@@ -11,12 +11,23 @@ const start = async () => {
     throw new Error("MONGO_URI JWT_KEY must be defined");
   }
 
+  if (!process.env.NATS_CLUSTER_ID) {
+    throw new Error("NATS_CLUSTER_ID must be defined");
+  }
+
+  if (!process.env.NATS_CLIENT_ID) {
+    throw new Error("NATS_CLIENT_ID must be defined");
+  }
+  if (!process.env.NATS_URL) {
+    throw new Error("NATS_URL must be defined");
+  }
+
   try {
     // cluster id comes from infra/nats-deployment=> arguments(args)=> cid (clusterid)
     await natsWrapper.connect(
-      "ticketing",
-      "ticket-client",
-      "http://nats-srv:4222"
+      process.env.NATS_CLUSTER_ID,
+      process.env.NATS_CLIENT_ID,
+      process.env.NATS_URL
     );
     // Do not hide away this 'on close' logic as process.exit logic should not be in some class in a library
     natsWrapper.client.on("close", () => {

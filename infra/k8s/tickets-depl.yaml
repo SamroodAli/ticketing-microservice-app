@@ -20,11 +20,11 @@ spec:
             - name: NATS_CLIENT_ID
               valueFrom:
                 fieldRef:
-                  fieldPath: metadata.name # name of the pod running this service will be client id 
+                  fieldPath: metadata.name # name of the pod running this service will be client id
             - name: MONGO_URI
               value: "mongodb://tickets-mongo-srv:27017/tickets"
             - name: NATS_URL
-              value: "http://nats-srv:4222",
+              value: "http://nats-srv:4222"
             - name: NATS_CLUSTER_ID
               value: "ticketing"
             - name: JWT_KEY # What will show up in code, can be different from the secret's key
