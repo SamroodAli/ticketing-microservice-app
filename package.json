@@ -1,0 +1,23 @@
+{
+  "name": "ticketing-microservice-app",
+  "version": "1.0.0",
+  "description": "# Stack",
+  "main": "index.js",
+  "scripts": {
+    "update-shared": "npm update @devstoic-learning/ticketing --workspaces"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SamroodAli/ticketing-microservice-app.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SamroodAli/ticketing-microservice-app/issues"
+  },
+  "homepage": "https://github.com/SamroodAli/ticketing-microservice-app#readme",
+  "workspaces": [
+    "tickets"
+  ]
+}

@@ -16,7 +16,6 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
   "dependencies": {
     "@devstoic-learning/ticketing": "^1.0.14",
     "@types/cookie-session": "^2.0.43",
@@ -41,5 +40,14 @@
     "mongodb-memory-server": "^8.0.2",
     "supertest": "^6.1.6",
     "ts-jest": "^27.0.7"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SamroodAli/ticketing-microservice-app.git"
+  },
+  "bugs": {
+    "url": "https://github.com/SamroodAli/ticketing-microservice-app/issues"
+  },
+  "homepage": "https://github.com/SamroodAli/ticketing-microservice-app#readme",
+  "description": ""
 }
