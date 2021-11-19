@@ -1,5 +1,6 @@
 import mongoose, { Document, Model } from "mongoose";
 import { OrderStatus } from "@devstoic-learning/ticketing";
+import { TicketDoc } from "./Ticket";
 
 interface OrderAttrs {
   userId: string;
@@ -52,4 +53,4 @@ orderSchema.statics.build = (attrs: OrderAttrs) => {
   return new Order(attrs);
 };
 
-const Order = mongoose.model<OrderDoc, OrderModel>("Orders", orderSchema);
+const Order = mongoose.model<OrderDoc, OrderModel>("Order", orderSchema);
