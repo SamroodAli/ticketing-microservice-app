@@ -8,10 +8,10 @@ import {
   NotFoundError,
   currentUser,
 } from "@devstoic-learning/ticketing";
-// import { createTicketRouter } from "./routes/new";
-// import { showTicketRouter } from "./routes/show";
-// import { indexTicketRouter } from "./routes/index";
-// import { updateTicketRouter } from "./routes/update";
+import { createOrderRouter } from "./routes/new";
+import { showOrderRouter } from "./routes/show";
+import { indexOrderRouter } from "./routes/index";
+import { deleteOrderRouter } from "./routes/delete";
 
 const app = express();
 app.set("trust proxy", true); // traffic is proxied from ingress-nginx
@@ -27,10 +27,10 @@ app.use(
 );
 
 app.use(currentUser);
-// app.use(showTicketRouter);
-// app.use(updateTicketRouter);
-// app.use(createTicketRouter);
-// app.use(indexTicketRouter);
+app.use(showOrderRouter);
+app.use(deleteOrderRouter);
+app.use(createOrderRouter);
+app.use(indexOrderRouter);
 
 app.all("*", async () => {
   throw new NotFoundError();

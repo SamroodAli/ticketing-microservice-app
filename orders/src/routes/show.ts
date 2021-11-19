@@ -5,4 +5,4 @@ router.get("/api/orders/:orderId", async (req: Request, res: Response) => {
   res.send({});
 });
 
-export { router as indexOrderRouter };
+export { router as showOrderRouter };
