@@ -18,6 +18,8 @@
   },
   "homepage": "https://github.com/SamroodAli/ticketing-microservice-app#readme",
   "workspaces": [
-    "tickets"
+    "./tickets",
+    "./orders",
+    "./auth"
   ]
 }
