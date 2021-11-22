@@ -9,6 +9,8 @@ import {
 import { body } from "express-validator";
 import { Ticket } from "../models/Ticket";
 import { Order, OrderStatus } from "../models/Order";
+import { natsWrapper } from "../nats-wrapper";
+import { OrderCreatedPublisher } from "../events/publishers/order-created-publisher";
 
 // The window a user has to pay for his ordered ticket before the order expires.
 const EXPIRATION_WINDOW_SECONDS = 15 * 60;
@@ -53,7 +55,20 @@ router.post(
       expiresAt: expiration,
       ticket: ticket,
     });
+
     await order.save();
+
+    new OrderCreatedPublisher(natsWrapper.client).publish({
+      status: OrderStatus.Created,
+      userId: req.currentUser!.id,
+      ticket: {
+        id: ticket.id,
+        price: ticket.price,
+      },
+      expiresAt: order.expiresAt.toISOString(),
+      //very important, this event will be stringified when publishing and we cannot rely on the default behavior of Data stringificaiton
+      //which consider's the user's current timezone, instead we want an general timezone, here it will be utc
+    });
 
     res.status(201).send(order);
   }
