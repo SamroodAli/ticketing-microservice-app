@@ -4,7 +4,7 @@
   "description": "# Stack",
   "main": "index.js",
   "scripts": {
-    "update-shared": "npm update @devstoic-learning/ticketing --workspaces"
+    "update-shared": "npm install @devstoic-learning/ticketing --workspaces"
   },
   "repository": {
     "type": "git",
