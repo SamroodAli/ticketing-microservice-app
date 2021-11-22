@@ -7,6 +7,8 @@ import {
 } from "@devstoic-learning/ticketing";
 import { Order, OrderStatus } from "../models/Order";
 import mongoose from "mongoose";
+import { natsWrapper } from "../nats-wrapper";
+import { OrderCancelledPublisher } from "../events/publishers/order-cancelled-publisher";
 
 const router = express.Router();
 router.delete(
@@ -17,7 +19,7 @@ router.delete(
     if (!mongoose.Types.ObjectId.isValid(orderId)) {
       throw BadRequestError;
     }
-    const order = await Order.findById(orderId).exec();
+    const order = await Order.findById(orderId).populate("ticket").exec();
     if (!order) {
       throw new NotFoundError();
     }
@@ -27,6 +29,13 @@ router.delete(
     // we are not really deleting document, so a violdation of REST, maybe patch request would be more appropriate
     order.status = OrderStatus.Cancelled;
     await order.save();
+
+    new OrderCancelledPublisher(natsWrapper.client).publish({
+      id: order.id,
+      ticket: {
+        id: order.ticket.id,
+      },
+    });
 
     res.send(204).send(order);
   }
