@@ -1,8 +1,35 @@
 import express, { Request, Response } from "express";
+import {
+  requireAuth,
+  NotFoundError,
+  NotAuthorizedError,
+  BadRequestError,
+} from "@devstoic-learning/ticketing";
+import { Order, OrderStatus } from "../models/Order";
+import mongoose from "mongoose";
 
 const router = express.Router();
-router.delete("/api/orders/:orderId", async (req: Request, res: Response) => {
-  res.send({});
-});
+router.delete(
+  "/api/orders/:orderId",
+  requireAuth,
+  async (req: Request, res: Response) => {
+    const orderId = req.params.orderId;
+    if (!mongoose.Types.ObjectId.isValid(orderId)) {
+      throw BadRequestError;
+    }
+    const order = await Order.findById(orderId).exec();
+    if (!order) {
+      throw new NotFoundError();
+    }
+    if (order.userId !== req.currentUser!.id) {
+      throw new NotAuthorizedError();
+    }
+    // we are not really deleting document, so a violdation of REST, maybe patch request would be more appropriate
+    order.status = OrderStatus.Cancelled;
+    await order.save();
+
+    res.send(204).send(order);
+  }
+);
 
 export { router as deleteOrderRouter };

@@ -14,21 +14,20 @@ router.get(
   requireAuth,
   async (req: Request, res: Response) => {
     const orderId = req.params.orderId;
-    if (mongoose.Types.ObjectId.isValid(orderId)) {
-      const order = await Order.findById(orderId)
-        .populate("ticket")
-        .lean()
-        .exec();
-      if (!order) {
-        throw new NotFoundError();
-      }
-      if (order.userId !== req.currentUser!.id) {
-        throw new NotAuthorizedError();
-      }
-      res.status(200).send(order);
-    } else {
+    if (!mongoose.Types.ObjectId.isValid(orderId)) {
       throw new BadRequestError();
     }
+    const order = await Order.findById(orderId)
+      .populate("ticket")
+      .lean()
+      .exec();
+    if (!order) {
+      throw new NotFoundError();
+    }
+    if (order.userId !== req.currentUser!.id) {
+      throw new NotAuthorizedError();
+    }
+    res.status(200).send(order);
   }
 );
 
