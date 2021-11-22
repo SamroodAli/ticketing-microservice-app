@@ -4,16 +4,16 @@ import {
   requireAuth,
   validateRequest,
   NotFoundError,
-  BadRequestError
+  BadRequestError,
 } from "@devstoic-learning/ticketing";
 import { body } from "express-validator";
 import { Ticket } from "../models/Ticket";
-import {Order,OrderStatus} from "../models/Order"
+import { Order, OrderStatus } from "../models/Order";
 
 // The window a user has to pay for his ordered ticket before the order expires.
 const EXPIRATION_WINDOW_SECONDS = 15 * 60;
 
-const router = express.Router()
+const router = express.Router();
 router.post(
   "/api/orders",
   requireAuth,
@@ -21,7 +21,7 @@ router.post(
     body("ticketId")
       .not()
       .isEmpty()
-      .custom((input: string) =>  mongoose.Types.ObjectId.isValid(input))
+      .custom((input: string) => mongoose.Types.ObjectId.isValid(input))
       .withMessage("Please provide a valid ticket Id"),
   ],
   validateRequest,
@@ -36,26 +36,26 @@ router.post(
       throw new NotFoundError();
     }
 
-    const isReserved = await ticket.isReserved()
+    const isReserved = await ticket.isReserved();
 
     if (isReserved) {
-      throw new BadRequestError('Ticket is already reserved')
+      throw new BadRequestError("Ticket is already reserved");
     }
     // Calculate an expiration date for this order
-    const expiration = new Date()
+    const expiration = new Date();
 
-    expiration.setSeconds(expiration.getSeconds() + EXPIRATION_WINDOW_SECONDS)
+    expiration.setSeconds(expiration.getSeconds() + EXPIRATION_WINDOW_SECONDS);
     // Build the order and save it to the database
 
     const order = Order.build({
       userId: req.currentUser!.id,
       status: OrderStatus.Created,
       expiresAt: expiration,
-      ticket:ticket
-    })
-    await order.save()
+      ticket: ticket,
+    });
+    await order.save();
 
-    res.status(201).send(order)
+    res.status(201).send(order);
   }
 );
 
