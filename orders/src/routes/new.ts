@@ -4,6 +4,7 @@ import {
   requireAuth,
   validateRequest,
   NotFoundError,
+  OrderStatus
 } from "@devstoic-learning/ticketing";
 import { body } from "express-validator";
 import { Ticket } from "../models/Ticket";
@@ -28,10 +29,22 @@ router.post(
     // Find the ticket that the user is trying to order in the database
     const { ticketId } = req.body;
     // Make sure that this ticket is not already reserved
-    const ticket = Ticket.findById(ticketId);
+    const ticket = await Ticket.findById(ticketId);
     if (!ticket) {
       throw new NotFoundError();
     }
+
+    const order = await Order.findOne({
+      ticket: ticket,
+      status: {
+        $in: [
+          OrderStatus.Created,
+          OrderStatus.AwaitingPayment,
+          OrderStatus.Complete,
+          
+        ]
+      }
+    })
     // Calculate an expiration date for this order
     // Build the order and save it to the database
   }
