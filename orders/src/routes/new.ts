@@ -4,11 +4,12 @@ import {
   requireAuth,
   validateRequest,
   NotFoundError,
-  OrderStatus
+  BadRequestError
+
 } from "@devstoic-learning/ticketing";
 import { body } from "express-validator";
 import { Ticket } from "../models/Ticket";
-import { Order } from "../models/Order";
+import { Order,OrderStatus } from "../models/Order";
 
 const router = express.Router();
 router.post(
@@ -34,7 +35,7 @@ router.post(
       throw new NotFoundError();
     }
 
-    const order = await Order.findOne({
+    const existingOrder = await Order.findOne({
       ticket: ticket,
       status: {
         $in: [
@@ -45,6 +46,10 @@ router.post(
         ]
       }
     })
+
+    if (existingOrder) {
+      throw new BadRequestError('Ticket is already reserved')
+    }
     // Calculate an expiration date for this order
     // Build the order and save it to the database
   }
