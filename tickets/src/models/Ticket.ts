@@ -11,7 +11,7 @@ interface TicketDoc extends mongoose.Document {
   title: string;
   price: number;
   userId: string;
-  version: number; // since we update versionKey  using updateIfCurrentPlugin
+  version: number; // since we update versionKey using updateIfCurrentPugin
 }
 
 interface TicketModel extends mongoose.Model<TicketDoc> {
