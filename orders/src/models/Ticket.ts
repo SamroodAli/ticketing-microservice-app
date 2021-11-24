@@ -11,6 +11,7 @@ interface TicketAttrs {
 interface TicketDoc extends Document {
   title: string;
   price: number;
+  version: number;
   isReserved(): Promise<Boolean>;
 }
 
