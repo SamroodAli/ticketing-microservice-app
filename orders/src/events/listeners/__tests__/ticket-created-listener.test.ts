@@ -8,6 +8,9 @@ import { Ticket } from "../../../models/Ticket";
 const setup = () => {
   const listener = new TicketCreatedListener(natsWrapper.client);
 
+  // nats auto calls onMessage with two arguments ,data and msg
+  // we are calling onMessage ourselves with fake data and msg objects
+
   const data: TicketCreatedEvent["data"] = {
     version: 0,
     id: new mongoose.Types.ObjectId().toHexString(),

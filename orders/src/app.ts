@@ -10,7 +10,7 @@ import {
 } from "@devstoic-learning/ticketing";
 import { createOrderRouter } from "./routes/new";
 import { showOrderRouter } from "./routes/show";
-import { indexOrderRouter } from "./routes/index";
+import { indexOrderRouter } from "./routes";
 import { deleteOrderRouter } from "./routes/delete";
 
 const app = express();
