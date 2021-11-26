@@ -62,7 +62,7 @@ it("emits an order created event", async () => {
   });
 
   await ticket.save();
-  request(app)
+  await request(app)
     .post("/api/orders")
     .set("Cookie", global.signin())
     .send({ ticketId: ticket.id })
