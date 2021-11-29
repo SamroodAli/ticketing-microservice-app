@@ -50,3 +50,22 @@ it("acks the message", async () => {
   await listener.onMessage(data, msg);
   return expect(msg.ack).toHaveBeenCalled();
 });
+
+it("publishes a ticket updated event", async () => {
+  const { listener, ticket, data, msg } = await setup();
+  await listener.onMessage(data, msg);
+
+  expect(natsWrapper.client.publish).toHaveBeenCalled();
+
+  // we can test the data pubished as we called a jest mock in the above line instead of the real client publish function
+  // we get the arguments that were passed in the above mock function
+  // publish took three arguments, subject, data and a callback
+  // the mock.calls returns a nested array with the first item being the arguments passed in
+  // and we are getting the second argument with index 1
+  const argumentsToMockFunction = (natsWrapper.client.publish as jest.Mock).mock
+    .calls[0][1];
+
+  // we stringified the data passing in, so we need to parse it back to test it.
+  const ticketUpdatedData = JSON.parse(argumentsToMockFunction);
+  expect(ticketUpdatedData.orderId).toEqual(data.id); //data is the data of order that was created which would be orderId of the ticket published
+});
