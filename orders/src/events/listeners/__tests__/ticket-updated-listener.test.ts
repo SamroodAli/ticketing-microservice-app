@@ -16,7 +16,7 @@ const setup = async () => {
   await ticket.save();
 
   // creating data that will be used to update the ticket above
-  // nats auto calls onMessage with two arguments ,data and msg
+  // nats auto calls onMessage on listening events with two arguments ,data from the event and msg from node-nats-streaming library
   // we are calling onMessage ourselves with fake data and msg objects
   const data: TicketUpdatedEvent["data"] = {
     version: ticket.version + 1,
