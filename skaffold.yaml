@@ -40,3 +40,11 @@ build:
         manual:
           - src: "**/*.js"
             dest: .
+    - image: devsamrood/expiration
+      context: expiration
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "src/**/*.ts"
+            dest: .
