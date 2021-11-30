@@ -7,6 +7,7 @@ import {
   OrderStatus,
   ExpirationCompleteEvent,
 } from "@devstoic-learning/ticketing";
+
 import { Message } from "node-nats-streaming";
 
 const setup = async () => {
@@ -39,3 +40,31 @@ const setup = async () => {
 
   return { listener, msg, data, ticket, order };
 };
+
+it("Updates the order status to cancelled", async () => {
+  const { listener, order, data, msg } = await setup();
+  await listener.onMessage(data, msg);
+
+  const updatedOrder = await Order.findById(order.id);
+  return expect(updatedOrder!.status).toEqual(OrderStatus.Cancelled);
+});
+
+it("emits an order cancelled event", async () => {
+  const { listener, order, data, msg } = await setup();
+  await listener.onMessage(data, msg);
+
+  // getting arguments to publish // three arguments-> subject,data,callback
+  const argumentsToPublish = (natsWrapper.client.publish as jest.Mock).mock
+    .calls[0];
+
+  // Event data=> second argument => which is stringified before passing in which we are reversing here
+  // refer base publisher class onMessage function
+  const eventData = JSON.parse(argumentsToPublish[1]);
+  return expect(eventData.id).toEqual(order.id);
+});
+
+it("acks the message", async () => {
+  const { listener, data, msg } = await setup();
+  await listener.onMessage(data, msg);
+  return expect(msg.ack).toHaveBeenCalled();
+});
