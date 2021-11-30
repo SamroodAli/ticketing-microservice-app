@@ -23,6 +23,9 @@ const start = async () => {
   if (!process.env.NATS_URL) {
     throw new Error("NATS_URL must be defined");
   }
+  if (!process.env.ORDER_EXPIRATION_MINUTES) {
+    process.env.ORDER_EXPIRATION_MINUTES = "15";
+  }
 
   try {
     // cluster id comes from infra/nats-deployment=> arguments(args)=> cid (clusterid)

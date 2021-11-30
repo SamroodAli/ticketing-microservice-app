@@ -13,7 +13,8 @@ import { natsWrapper } from "../nats-wrapper";
 import { OrderCreatedPublisher } from "../events/publishers/order-created-publisher";
 
 // The window a user has to pay for his ordered ticket before the order expires.
-const EXPIRATION_WINDOW_SECONDS = 15 * 60;
+const EXPIRATION_WINDOW_SECONDS =
+  Number(process.env.ORDER_EXPIRATION_MINUTES) * 60;
 
 const router = express.Router();
 router.post(
