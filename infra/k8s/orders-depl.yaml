@@ -28,7 +28,7 @@ spec:
             - name: NATS_CLUSTER_ID
               value: "ticketing"
             - name: ORDER_EXPIRATION_MINUTES
-              value: "15"
+              value: "1"
             - name: JWT_KEY # What will show up in code, can be different from the secret's key
               valueFrom:
                 secretKeyRef:
