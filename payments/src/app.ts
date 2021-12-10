@@ -8,6 +8,7 @@ import {
   NotFoundError,
   currentUser,
 } from "@devstoic-learning/ticketing";
+import { createChargeRouter } from "./routes/new";
 
 const app = express();
 app.set("trust proxy", true); // traffic is proxied from ingress-nginx
@@ -23,6 +24,7 @@ app.use(
 );
 
 app.use(currentUser);
+app.use(createChargeRouter);
 
 app.all("*", async () => {
   throw new NotFoundError();
