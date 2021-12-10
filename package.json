@@ -21,6 +21,7 @@
     "./tickets",
     "./orders",
     "./auth",
-    "./expiration"
+    "./expiration",
+    "./payments"
   ]
 }

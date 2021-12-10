@@ -31,7 +31,7 @@ const start = async () => {
     );
     // Do not hide away this 'on close' logic as process.exit logic should not be in some class in a library
     natsWrapper.client.on("close", () => {
-      console.log("Ticket service connection to NATS closed");
+      console.log("Payment service connection to NATS closed");
       process.exit();
     });
 
@@ -39,12 +39,12 @@ const start = async () => {
     process.on("SIGTERM", () => natsWrapper.client.close());
 
     await mongoose.connect(process.env.MONGO_URI);
-    console.log("Connected to Tickets service MongoDb");
+    console.log("Connected to Payments service MongoDb");
   } catch (err) {
     console.error(err);
   }
   app.listen(3000, () => {
-    console.log("Tickets server is running on port 3000");
+    console.log("Payments server is running on port 3000");
   });
 };
 start();
