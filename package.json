@@ -4,6 +4,7 @@
   "description": "# Stack",
   "main": "index.js",
   "scripts": {
+    "create-workspace": "npm init -w",
     "update-shared": "npm install @devstoic-learning/ticketing --workspaces"
   },
   "repository": {
