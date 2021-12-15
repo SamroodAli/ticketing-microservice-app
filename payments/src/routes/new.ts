@@ -8,9 +8,10 @@ import {
   NotFoundError,
   OrderStatus,
 } from "@devstoic-learning/ticketing";
-import { CastError } from "mongoose";
+import { stripe } from "../stripe";
 
 import { Order } from "../models/Order";
+import { Stripe } from "stripe";
 
 const router = express.Router();
 
@@ -26,7 +27,7 @@ router.post(
     try {
       // as orderId might not be a valid id which throws an error
       order = await Order.findById(orderId);
-    } catch (err: CastError | any) {
+    } catch (err) {
       throw new BadRequestError("Please provide a valid Order id");
     }
 
@@ -40,6 +41,17 @@ router.post(
 
     if (order.status === OrderStatus.Cancelled) {
       throw new BadRequestError("Cannot pay for an cancelled order");
+    }
+
+    try {
+      await stripe.charges.create({
+        currency: "usd",
+        amount: order.price * 100, // order.price is in dollars and we need cents for stripe
+        source: token,
+        description: `Ticketing.org - order ticket - orderId: ${orderId}`, //optional
+      });
+    } catch (err: Stripe.Errors | any) {
+      throw new BadRequestError(err.message);
     }
 
     res.send({ success: true });
