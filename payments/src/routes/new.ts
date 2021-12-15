@@ -8,6 +8,7 @@ import {
   NotFoundError,
   OrderStatus,
 } from "@devstoic-learning/ticketing";
+import { CastError } from "mongoose";
 
 import { Order } from "../models/Order";
 
@@ -21,7 +22,13 @@ router.post(
   async (req: Request, res: Response) => {
     const { token, orderId } = req.body;
 
-    const order = await Order.findById(orderId);
+    let order;
+    try {
+      // as orderId might not be a valid id which throws an error
+      order = await Order.findById(orderId);
+    } catch (err: CastError | any) {
+      throw new BadRequestError("Please provide a valid Order id");
+    }
 
     if (!order) {
       throw new NotFoundError();
