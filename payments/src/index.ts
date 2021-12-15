@@ -23,6 +23,9 @@ const start = async () => {
   if (!process.env.NATS_URL) {
     throw new Error("NATS_URL must be defined");
   }
+  if (!process.env.STRIPE_KEY) {
+    throw new Error("STRIPE KEY must be defined");
+  }
 
   try {
     // cluster id comes from infra/nats-deployment=> arguments(args)=> cid (clusterid)
