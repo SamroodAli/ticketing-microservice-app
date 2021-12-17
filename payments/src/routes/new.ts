@@ -11,6 +11,7 @@ import {
 import { stripe } from "../stripe";
 
 import { Order } from "../models/Order";
+import { Payment } from "../models/Payment";
 import { Stripe } from "stripe";
 
 const router = express.Router();
@@ -44,12 +45,19 @@ router.post(
     }
 
     try {
-      await stripe.charges.create({
+      const charge = await stripe.charges.create({
         currency: "usd",
         amount: order.price * 100, // order.price is in dollars and we need cents for stripe
         source: token,
         description: `Ticketing.org - order ticket - orderId: ${orderId}`, //optional
       });
+
+      const payment = Payment.build({
+        orderId,
+        stripeId: charge.id,
+      });
+
+      await payment.save();
     } catch (err: Stripe.Errors | any) {
       throw new BadRequestError(err.message);
     }
