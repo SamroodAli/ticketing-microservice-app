@@ -13,6 +13,8 @@ import { stripe } from "../stripe";
 import { Order } from "../models/Order";
 import { Payment } from "../models/Payment";
 import { Stripe } from "stripe";
+import { PaymentCreatedPublisher } from "../events/publishers/payment-created-publisher";
+import { natsWrapper } from "../nats-wrapper";
 
 const router = express.Router();
 
@@ -58,6 +60,11 @@ router.post(
       });
 
       await payment.save();
+      await new PaymentCreatedPublisher(natsWrapper.client).publish({
+        id: payment.id,
+        orderId,
+        stripeId: charge.id,
+      });
     } catch (err: Stripe.Errors | any) {
       throw new BadRequestError(err.message);
     }
