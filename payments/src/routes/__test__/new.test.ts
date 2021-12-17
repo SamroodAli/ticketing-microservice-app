@@ -2,6 +2,7 @@ import request from "supertest";
 import { app } from "../../app";
 import mongoose from "mongoose";
 import { Order } from "../../models/Order";
+import { Payment } from "../../models/Payment";
 import { OrderStatus } from "@devstoic-learning/ticketing";
 import { stripe } from "../../stripe";
 
@@ -29,7 +30,7 @@ it("returns a 401 when purchasing an order that doesnt belong to the user", asyn
 
   await order.save();
 
-  await request(app)
+  return request(app)
     .post("/api/payments")
     .set("Cookie", global.signin())
     .send({
@@ -51,7 +52,7 @@ it("returns a 400 when purchasing a cancelled order", async () => {
 
   await order.save();
 
-  await request(app)
+  return request(app)
     .post("/api/payments")
     .set("Cookie", global.signin(userId))
     .send({
@@ -61,7 +62,7 @@ it("returns a 400 when purchasing a cancelled order", async () => {
     .expect(400);
 });
 
-it("returns a 204 with valid inputs", async () => {
+it("returns a 201 with valid inputs", async () => {
   const userId = new mongoose.Types.ObjectId().toHexString();
   const order = Order.build({
     id: new mongoose.Types.ObjectId().toHexString(),
@@ -80,10 +81,13 @@ it("returns a 204 with valid inputs", async () => {
       token: "tok_visa",
       orderId: order.id,
     })
-    .expect(201);
+    .expect(201); // this test fails for india where stripe needs customer name and address
 
   const chargeOptions = (stripe.charges.create as jest.Mock).mock.calls[0][0];
   expect(chargeOptions.source).toEqual("tok_visa");
   expect(chargeOptions.amount).toEqual(20 * 100);
-  return expect(chargeOptions.currency).toEqual("usd");
+  expect(chargeOptions.currency).toEqual("usd");
+
+  const payment = await Payment.findOne({ orderId: order.id });
+  return expect(payment).not.toBeNull(); // as findOne returns a document or null
 });
