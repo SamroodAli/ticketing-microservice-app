@@ -5,5 +5,5 @@ import {
 } from "@devstoic-learning/ticketing";
 
 export class OrderUpdatedPublisher extends Publisher<OrderUpdatedEvent> {
-  readonly subject = Subjects.OrderUpdatedEvent;
+  readonly subject = Subjects.OrderUpdated;
 }
