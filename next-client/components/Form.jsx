@@ -8,7 +8,7 @@ const Form = ({ url, caption }) => {
   const [password, setPassword] = useState("");
   const { doRequest, errors } = useRequest({
     url,
-    method: "post",
+    method: "post", //not POST because we are accessing axios.post using axios[method]
     body: {
       email,
       password,
