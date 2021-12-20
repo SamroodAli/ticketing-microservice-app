@@ -16,7 +16,6 @@ const useRequest = ({ url, method, body, onSuccess }) => {
       const errors = err.response.data.errors;
       setErrors(
         <div className="alert alert-danger">
-          <h4>Sorry, please provide valid crendentials</h4>
           <ul className="my-0">
             {errors.map((err) => (
               <li key={err.message}>{err.message}</li>
