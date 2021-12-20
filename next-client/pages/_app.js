@@ -19,17 +19,6 @@ MyApp.getInitialProps = async (appContext) => {
       "/api/users/currentuser"
     );
 
-    if (appContext.Component.getInitialProps) {
-      pageProps = await appContext.Component.getInitialProps(
-        appContext.ctx,
-        client,
-        data.currentUSer
-      );
-      return {
-        ...pageProps,
-        currentUser: data.currentUser,
-      };
-    }
     return {
       currentUser: data.currentUser,
     };
