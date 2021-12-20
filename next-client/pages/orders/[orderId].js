@@ -2,13 +2,16 @@ import { useEffect, useState } from "react";
 import buildClient from "../../api/build-client";
 
 const OrderShow = ({ order }) => {
-  const [timeLeft, setTimeLeft] = useState("");
+  const [timeLeft, setTimeLeft] = useState(0);
 
   useEffect(() => {
     const findTimeLeft = () => {
       const minutesLeft = new Date(order.expiresAt) - new Date();
       const secondsLeft = Math.round(minutesLeft / 1000);
       setTimeLeft(secondsLeft);
+      if (timeLeft < 0) {
+        clearInterval(timerId);
+      }
     };
     // call immediately to show immediately
     findTimeLeft();
@@ -19,6 +22,9 @@ const OrderShow = ({ order }) => {
     };
   }, []);
 
+  if (timeLeft < 0) {
+    return <div>Order Expired</div>;
+  }
   return <div>{timeLeft}</div>;
 };
 
