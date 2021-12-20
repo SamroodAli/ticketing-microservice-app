@@ -1,14 +1,17 @@
 import buildClient from "../../api/build-client";
 import useRequest from "../../hooks/useRequest";
+import { useRouter } from "next/router";
 
 const TicketShow = ({ ticket, context }) => {
+  const router = useRouter();
   const { doRequest, errors } = useRequest({
     url: "/api/orders",
     method: "post", //not POST because we are accessing axios.post using axios[method]
     body: {
       ticketId: ticket.id,
     },
-    onSuccess: (order) => console.log(order),
+    onSuccess: (order) =>
+      router.push("/orders/[orderId]", `/orders/${order.id}`),
   });
 
   const onSubmit = (e) => {

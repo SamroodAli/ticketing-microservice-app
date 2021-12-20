@@ -11,7 +11,6 @@ const NewTicket = () => {
     url: "/api/tickets",
     method: "post", //not POST because we are accessing axios.post using axios[method]
     onSuccess: (ticket) => {
-      console.log(ticket);
       router.push("/");
     },
     body: {
