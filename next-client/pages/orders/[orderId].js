@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import buildClient from "../../api/build-client";
+import StripeCheckout from "react-stripe-checkout";
 
 const OrderShow = ({ order }) => {
   const [timeLeft, setTimeLeft] = useState(0);
@@ -25,7 +26,15 @@ const OrderShow = ({ order }) => {
   if (timeLeft < 0) {
     return <div>Order Expired</div>;
   }
-  return <div>{timeLeft}</div>;
+  return (
+    <div>
+      <p>Time left to pay {timeLeft}</p>
+      <StripeCheckout
+        token={(token) => console.log(token)}
+        stripeKey={process.env.NEXT_PUBLIC_STRIPE_KEY}
+      />
+    </div>
+  );
 };
 
 export const getServerSideProps = async (context) => {
