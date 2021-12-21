@@ -1,5 +1,7 @@
 # Ticketing Microservices application
 
+A full stack web application built with microservices architecture. A user is able to signup/signin and sell/buy tickets. Tickets order results in a short expiration window where they can pay for it before the order expires. Pay for the tickets with Stripe.
+
 # Stack
 
 Frontend: NextjS
@@ -24,7 +26,15 @@ Event Bus: NATs
 
 ## Services
 
-1. auth - Authentication server
+1. Auth - Authentication server
    - TechStack: Express, MongoDB
-2. tickets - Tickets resource server
+2. Tickets - Tickets resource service
    - TechStack: Express, MongoDB
+3. Orders - Order Resource service
+   - TechStack: Express, MongoDB
+4. Payments - Stripe payment service
+   - TechStack: Expresss, MongoDB
+5. Client - Nextjs frontend client
+   - TechStack: Nextjs
+6. Expiration - Order expiration service
+   - TechStack: Express,bull,Redis
