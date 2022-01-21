@@ -21,10 +21,3 @@ Event Bus: NATs
 2. Docker containers running in pods.
 3. Deployment for managing pods.
 4. ClusterIp services for virtual ip.
-
-## Services
-
-1. auth - Authentication server
-   - TechStack: Express, MongoDB
-2. tickets - Tickets resource server
-   - TechStack: Express, MongoDB
