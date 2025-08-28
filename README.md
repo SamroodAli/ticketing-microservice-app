@@ -1,4 +1,5 @@
 # Ticketing Microservices application
+A full-stack ticket booking app built with microservices architecture. The stack consists of NATs Event Bus, Docker, Kubernetes, NextJS, Express, and MongoDB
 
 # Stack
 Frontend: NextjS
